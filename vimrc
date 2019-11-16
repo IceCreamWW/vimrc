@@ -17,7 +17,7 @@ filetype plugin on
 runtime macros/matchit.vim
 
 " set the runtime path to include Vundle and initialize
-set rtp+=/home/icecreamww/.vim/bundle/Vundle.vim
+set rtp+=~/.config/nvim/bundle/Vundle.vim
 call vundle#begin()
 " alternatively, pass a path where Vundle should install plugins
 "call vundle#begin('~/some/path/here')
@@ -49,16 +49,38 @@ Plugin 'vim-scripts/surround.vim'
 Plugin 'nelstrom/vim-visual-star-search'
 Plugin 'tpope/vim-abolish'
 Plugin 'tmhedberg/SimpylFold'
-Plugin 'vim-scripts/indentpython.vim'
-" Plugin 'Valloric/YouCompleteMe'
-Plugin 'vim-syntastic/syntastic'
-" Plugin 'nvie/vim-flake8'
-" Plugin 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
 Plugin 'alvan/vim-closetag'
-Plugin 'lervag/vimtex'
 Plugin 'iamcco/markdown-preview.vim'
 Plugin 'xuhdev/vim-latex-live-preview'
 Plugin 'jiangmiao/auto-pairs'
+Plugin 'ervandew/supertab'
+Plugin 'lervag/vimtex'
+
+if has('nvim')
+  Plugin 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+else
+  Plugin 'Shougo/deoplete.nvim'
+  Plugin 'roxma/nvim-yarp'
+  Plugin 'roxma/vim-hug-neovim-rpc'
+endif
+let g:deoplete#enable_at_startup = 1
+
+""" VIM SNIPTS
+" Track the engine.
+Plugin 'SirVer/ultisnips'
+
+" Snippets are separated from the engine. Add this if you want them:
+Plugin 'honza/vim-snippets'
+
+" Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<c-j>"
+let g:UltiSnipsJumpBackwardTrigger="<c-k>"
+let g:UltiSnipsListSnippets="<C-a>"
+
+" If you want :UltiSnipsEdit to split your window.
+" let g:UltiSnipsEditSplit="normal"
+let g:UltiSnipsSnippetDirectories=[$HOME.'/.vim/UltiSnips']
 
 
 " All of your Plugins must be added before the following line
@@ -99,6 +121,7 @@ set shiftwidth=4
 set showmatch
 set foldmethod=indent
 set foldlevel=99
+set guicursor=
 let autosave=2
 let python_highlight_all=1
 
@@ -108,9 +131,9 @@ set grepformat=%f:%l:%c:%m
 " END 'SET' SETTINGS
 
 " START YCM
-let g:ycm_autoclose_preview_window_after_completion=1
-let g:ycm_seed_identifiers_with_syntax = 1 
-map <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
+" let g:ycm_autoclose_preview_window_after_completion=1
+" let g:ycm_seed_identifiers_with_syntax = 1 
+" map <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
 " END YCM
 
 " START vim-latex-live-preview
@@ -134,8 +157,12 @@ xnoremap & :&&<CR>
 " mute highlight search shortcut
 nnoremap <silent> <C-l> :<C-u>nohlsearch<CR><C-l>
 
+" format python code
+nnoremap <C-f> :Autopep8<CR>
+let g:autopep8_disable_show_diff=1
+
 " remap disable sync check
-nnoremap <silent> <C-a> :<C-u>SyntasticReset<CR><C-a>
+" nnoremap <silent> <C-a> :<C-u>SyntasticReset<CR><C-a>
 
 " remap %% to complete curpath
 cnoremap <expr> %% getcmdtype() == ':' ? expand('%:h').'/': '%%'
